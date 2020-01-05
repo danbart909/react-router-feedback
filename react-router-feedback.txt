@@ -1,0 +1,117 @@
+A few things first:
+
+Highlighting: There seem to be several different keywords or topics using highlighting in this reading, sometimes even within the same paragraph. Using the same gray background for all these different terms/concepts can be confusing. I feel like using different color highlights for different concepts would really help. I make my point on line 75.
+
+Boxes: I mean the spaces code is usually in. They urgently need headers to denote what file they belong to. There are several places in the reading where it isn't made clear on which file the code in boxes were supposed to go or what to do with it. I'll talk more about it later.
+
+Line 5: I appreciate the heads up so I can input "npx create-react-app Noteful" early. These things always take a while to set up, and having to setup a react app in the middle of a reading really disrupts the student's pacing.
+
+Line 7: Why just the wireframes? What does that mean?
+
+Line 8: Fake data?
+
+Line 9: Why are you assuming the student would assume we'd need to implement API calls? Didn't you specifically say client-side routing in line 3?
+
+Line 10: We don't actually end up doing this next checkpoint, we instead do this two checkpoints later. The length of the next checkpoint suggests it was cut short for some reason, as it continues on in the checkpoint after that. I'm not sure I understand why (and I know I don't have to), but it makes me wonder what else in the curriculum is imported and chopped up.
+
+Line 22 - 34: I see what the author was going for here. It mostly works, but the analogy can be simplified because most digital radios also have knobs. The analog radio isn't needed, and we're left with just the digital radio because it can fill the role of both radios. The analogy should compare the manual knob (without routing) with the single-push presets (with routing) on the digital radio (javascript web application).
+
+Line 32: The first highlight is a pseudocode url.
+
+Line 44: Ok, so... a Javascript web application without routing is like filling out a form on a page? To update the state? Isn't that something a Javascript web application *with* routing should be able to do as well? "One radio station is the radio in one state": so... one route is a radio in one state... "and one route is your React app in one state": and another route is my react app in... another state? or the same state? what the relationship between a radio and a react app? Isn't the radio supposed to be the react app? Did we just compare something with itself? What is going on? How does [/path] factor into http://localhost:3000/? http://localhost:3000/path? What is this?
+
+Lines 50-53: Is this what the analogy was leading up to? Different urls?
+
+Line 66: I like to click on any links you provide, even if they go nowhere. Although... isn't this potentially dangerous?
+
+Line 70-110: I always like the pseudocode examples, but sometimes my understanding of the pseudocode is seriously impacted by not being entirely clear on the difference between what is hard-coded into the language and what is variable pseudocode. It's not too difficult in this specific example because of the low amount of variables and our prior knowledge of the code used, but I think it would be a huge help if certain terms or keywords or variables or anything else you can think of would be color-coded, so everything can be tracked and followed much easier. It may sound like a silly suggestion and maybe not of much help, but using custom themes in Visual Studio Code with bright and distinct colors has by itself helped improve my coding and my ability to read code. I do see a few things with color going on here, but I wish "currentQuestionIndex" had its own color, and most of the color is mysteriously missing from the follow-up example at lines 143-162. I feel very strongly that you guys should splash some color in the examples to help us out.
+
+Line 112: So here we have the author describe something in detail (lines 61-64), then provide an example, and then say it "doesn't do everything we described." This is poorly worded, because it gives the impression the author gave up in the middle of writing the example. How about, it "doesn't do everything we described, for now we are only interested in the if statement" or "doesn't do everything we described, we have a live example that demonstrates this in a moment" or even "doesn't do everything we described, but don't worry about it for now!" There needs to be something else in that statement. I know they are referencing all the code of the other parts of the quiz that isn't relevent to the subject on hand, however this is never mentioned or explained.
+
+Line 118-120: Ok so maybe I'm just stubborn, but if I'm given some code, I need to make sure I understand it. To me, example code is like a puzzle that's already been solved, and by making sure I understand how all the little pieces fit together, I hope to be better prepared to solve any related problems in the future. I realize all the javascript doesn't have anything to do with router, but there is nothing in the quiz javascript that resembles the example. As of this writing (start of 2020) the quiz example is sandwiched between two examples that assume the quiz was written in a way it wasn't, and that seems like a confusing oversight that should be a high priority. On top of this, it appears the author has no idea our first Thinkful project was designing a quiz app ALMOST EXACTLY IN EVERY WAY like the description (lines 61-64). Notably, neither the example nor my own quiz app used an if statement on a question index to display questions in order like in the pseudocode in the boxes. I feel like this current demonstration has been mishandled, and I'd be real interested to instead have a demonstration where we adapt our quiz apps to use react and react router. Or, at the very least, a quiz example that actually corresponds to the pseudocode.
+
+Line 126: So basically, everything up to now has been to explain that we can use router to... jump ahead in quizzes?
+
+Line 134-137: These links still don't go anywhere, why make them links?
+
+Line 164: When I first read this, I took it to mean the boxed pseudocode example won't work exactly as written when adapted to the code we want to use. I then spent 15 minutes looking over the quiz example that was provided for anything that resembled what was going on in the boxed pseudocode, until I got frustrated and gave up. If that sounds rediculous, maybe you should consider the fact that its aggrevating to be repeatedly told I shouldn't worry that I don't understand what the hell it is you're talking about (Lines 112, 120 164)
+
+Line 168: It really feels weird to have clickable links that don't go anywhere. Also note the highlighted component here. Along with the url in line 66 and the variable in line 166, that makes 3 different things that have been highlighted so far, all in the same color: url, javascript variable, react component.
+
+Lines 183-197: Add two to the highlight list: react projects and react packages.
+
+Lines 199-215: This is good. I like it. Very clear about how the code is being edited. Still needs a header/title with the filename for clarity, especially for pseudocode (this is something all the boxes need).
+
+Line 217: This is not good. I don't like it. It takes something that should be very simple to explain and obfuscates it. Luckily, we have a picture coming up to help things.
+
+Line 219: Adding jsx (from line 217) and state data to highlight list.
+
+Line 223: Oh, hey! A picture! There should be more of these handy things lying around.
+
+Line 231-239: There might be a scientist or someone out there who said tossing in some random light roleplay would be a good way to keep the reader engaged, but I have to say, I'm not really a fan. It's weird and out of place.
+
+Lines 241-244: I still don't think these links should be clickable.
+
+Line 248: url, javascript variable, react component, react projects, react packages, jsx, state data... and now filepath brings us to 8 different things highlighted by grey.
+
+Lines 250-254: Quickly is used twice - line 250 and 254. But why? What is the rush? I'm not on a time limit, and it would be kind of weird if the author was on a time limit. I really hope this doesn't mean things won't be thoroughly explained. Also, in order to follow the example I need to use "npm install" and download the dependencies, which isn't a fast process, so "quickly" isn't really an option here anyway. 
+
+Lines 250-310: I don't remember which link I downloaded, but why are there two? My files were all organized in ./src I think. I don't remember having to follow the example at lines 288-302, but I do remember having to edit a css file to get it to look like the img at line 310.
+
+Line 310: Oh, hey! A picture! There should be more of these handy things lying around.
+
+Line 320: Props makes it 9.
+
+Lines 327-339: Is this supposed to be pseudocode? Why is foo used for everything? I don't know what this means! *sobs* foo will haunt me in my nightmares now...
+
+Lines 345-355: So this example was given with two components, but only one of them imported? Seems like a wierd and unnecessary step, but okay.
+
+Lines 359-370: Clarifying that we are now importing "Route" from the react-router-dom package would be helpful. I get nervous when I see brackets in weird places, and it would be very helpful to me if the text was as clear as possible about what is happening.
+
+Lines 374-386: If I stopped scrolling the page and landed on this box, I wouldn't be able to tell what component or file it was referring to unless I hunt it down and find it. These boxes really need title/headers.
+
+Lines 390-391: These actually work since I had used "npm start", which was really nice.
+
+Line 393: I don't know why this is highlighted, but it brings the count to 10. I'm going to stop it here since I think there are more but I think I made my point... which is 10+ different types of highlights all using the same color makes determining the context in which they are used much harder. A really simple and effective solution would be to use different highlight colors to easily distinguish between different concepts or topics. Here's that list one more time: url, javascript variable, react component, react projects, react packages, jsx, state data, filepath, props and "There's a bug!".
+
+Lines 417-419: I'm wondering if there is a particular reason urls aren't links anymore.
+
+Lines 425-431: No reminder of which component this edit is in? What if I got distracted by a butterfly? What if I had to leave just before this and then pick it up later? Again, I appeal to you for header/titles.
+
+Line 437: Suddenly, the weird gibbersh in line 252 makes sense! I like the five checkpoints with links to the app in various states of development (also at lines 250, 540, 572 and 667), but there is a slight problem with that approach in this particular case. There isn't a lot of content between the checkpoints, so it feels like following along with the code is kind of wasted effort. I feel like maybe a better approach would be to have the starting code at the start and the finished code at the end - so two checkpoints. The checkpoints are too close together.
+
+Line 743-759: The author is known to occasionally toss pseudocode in with other examples without warning on occasion, so I'm wondering if its pseudocode.
+
+Line 769: Is this from the same repository at 694? Why have two links?
+
+Line 799: Yay! Some kind of visual distinction! I can deduce with reasonable confidence, using visual cues and contextual information, that this is pseudocode!
+
+Lines 807-811: So which foo is which and where? In the Route example above? ...this is a very difficult and very roundabout way to visualize this. I think it would make so much more sense if you just had these in the box at 797-801. Under "<Route path='/fixed/:dynamic' />" just have "<Route path='/fixed/foo' />", "<Route path='/fixed/bar' />", "<Route path='/fixed/:123' />", "<Route path='/fixed' /> = no match", and "<Route path='/something-else/foo' /> = no match."
+
+Line 834: Actually, it would be pretty helpful if these urls were turned to links.
+
+Line 836-847: So this is using the same coloring as the pseudocode on line 799, yet I don't think this is actual pseudocode. I know it says in the line before this that this box is a "screenshot" of a console.log for props.match, so why not have an actual screenshot?
+
+Lines 896-898: Much of the reading up to this point has taken a very passive stance on elaborating on examples or sample code, and look, I get it. I'm well aware by now that looking up solutions to problems on the internet is actually a skill a developer needs to have to succeed. Yes, students should get in the habit of looking things up for themselves to further their understanding of the material. There is something missing from this viewpoint: the thinkful course is not free. Students either have paid, are paying, or have a contract to pay a certain amount of money to have access to this material, helpful personnel and resources. In addition, if looking up solutions to problems on the internet is indeed a skill for web development, shouldn't it then be treated as such and be something that is actually taught in the curriculum (however silly or rediculous it may seem) or at least accounted for? Line 896 is the first time I can remember where outside links are provided in assistance to the reader for a specific example or solution. I'd like to have a detailed line-by-line analysis of the code in addition to the links to outside resources. Since I paid to have access to this, it doesn't really make sense to have code dropped on me unexplained and then given links to free outside resources. What's the sense in paying money if the readings consistently confuse me, then link to outside sources that explain things better anyway? The curriculum itself should be the resource. In the end, thinkful is a business, and... well, honestly, I think you guys could be doing much better than this. If the "important piece" is props.match.params.poemId, then why aren't you explaining why? You assume by looking this stuff up the student will understand the code and what is going on, but what if they fail to understand? I sure couldn't figure it all out my first read-through. I had a real loose grasp of what was happening and I would have absolutely loved some kind of detailed code breakdown (even over all the stuff we've already covered - I'm a student, not an actual developer). Yes, again, I know researching things on my own should be a skill I develop and I should practice doing that, but not in the middle of a reading. The reading doesn't make me suddenly start iterating over arrays, so I don't think it should be making me look up how things work. Let me do that for assignments, projects, or something else, but not for trying to understand what is going on in the reading. Also in line 898, I think having a bunch of console.logs already in the code for the reader to see would be great. I agree console.logs are a great way to see just what is going on and how data is transfered, but it can be confusing to try to figure out from the reading what it is I'm looking for or what I should log.
+
+Line 967: The reading seems to know something I don't. It could be talking about a API Key we generated somewhere in some other reading, but I'm sure it would have mentioned that. The provided API Key works just fine, so whatever.
+
+Line 1241: If its bold, shouldn't it be a key term? Or something? I don't know. Just wondering why its bold.
+
+Line 1295: Yes! ...No! ...Pass!
+
+Line 1299: I feel like this first sentence is pretty much the exact description of what the author generally always does anyway. I also feel like "like magic" is the author assuming I'm 6 years old and wants to explain this as fast and briefly as possible while rolling their eyes. Seriously, what is going on here with the staunch refusal to explain things?
+
+Line 1345: Is this a continuation of Line 1171? Why did these links stop looking like they did on Line 950?
+
+Line 1347: I feel like this should be copied to the start of the reading. Have the summary both at the beginning and end.
+
+Lines 1355-1473: I appreciate the scale of the assignment, but I think it is perhaps a little much. The reading (line 1473) says we should attempt this for 3 hours, but we only have 2 hours on weekdays to work on assignments. We have 4 hours on Saturdays, but we did this on a Tuesday or Thursday, not sure which one. The assignment wants us to construct the app from scratch, which doesn't really make sense to me. We are learning react router, so shouldn't we be practicing that? I feel like we should be practicing the things we learned about in the reading, not starting an entirely new project from scratch. I appreciate the wireframes to help illustrate what we should be building, but they show two routes side-by-side simultaneously but access similar information. I was confused by this, and internet searches didn't really help, so I could never get around to practicing anything regarding router. The solution confused me even more than the reading did, and there were no comments in the code to explain anything. First time after reading this I felt lost, confused and very frustrated, and I've heard I'm definitely not the only student who feels that way about this whole react curriculum. Pacing is important, so having 3-4 separate react apps in one reading can really break up the pacing and any sense of how the separate concepts work together. It's also annoying to create a bunch of react apps on my computer. That should be irrelevant, I know, but still. I think it would be great if we could use the assignment solution in place of the 3-4 examples to demonstrate the topic, and then use the 3-4 apps as a multi-part assignment. Switch the assignments with the examples and vice-versa. I think it would be a much better approach, also because the current solution has a .map implemented that no normal human student would think of in a million years, and it only confused the hell out of me.
+
+End
+
+You may have noticed I made a big deal out of pictures when I saw them. Pictures are awesome. Picturs are amazing. Pictures are worth a 1000 words. Unfortunately, the author would prefer to use a 1000 words to try to tell us something when he could just as well simply ...show. Don't get me wrong, I LOVE text. If given a choice, I'd rather read an article than watch a video. However, things like math and programming can and should be taught through showing. You can either write one equals one or 1 = 1. The first is telling, the second is showing. I feel like the reading as a whole does a lot more telling than showing. Telling is fine, its great, but not when there isn't enough showing, especially as the code gets more complicated. We need more showing with the telling. I don't really want to compare this curriculum with another resource, but I will recommend taking a good look at w3school's website. They do a considerable about amount of showing, and almost all of it is with a lightweight code editor right in the browser. I would LOVE to see something like this editor implemented and utilized on the thinkful site. That would be amazing.
+
+My last issue with the reading is how difficult it is to find a concept in the reading. When working on the assignment I would try to find things it was talking about, but the reading is so huge and the sections are so indistinct from each other that it would take a full minute every single time I needed to try to find something in the reading. Especially for readings this long, we a much easier way to find what we're looking for when we need to.
+
+I think that's mostly it. I don't necessarily think the curriculum is bad, I think it's addressed to programmers that know a lot of this stuff intuitively already. We aren't that. We are part-time web dev students, and we are going to need to have a lot of blanks filled in and a lot of stuff hammered in our heads. We need practice and guidance. We are paying you for this, and I feel like you can do better. I'm not trying to be mean or nasty, just honest.

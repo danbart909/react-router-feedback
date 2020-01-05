@@ -1,0 +1,1473 @@
+[header]React Router[/header]
+
+[b]Objective:[/b] By the end of this checkpoint, you can implement client-side routing.
+
+At the end of this checkpoint, you’ll build out the design and routing for an app called Noteful.
+
+  We'll supply you with wireframes for the pages of the application.
+  You'll use fake data we supply you with to populate the design.
+  You won't need to implement any API calls or create or delete entities in state.
+  A heads-up: in the next checkpoint on Context, you'll integrate this project with an API and add functionality.
+
+[b]Key Terms[/b]
+
+  Router
+  Route
+  Dynamic routing
+  Link component
+  History
+
+[big title]What is React Router?[/big title]
+
+Adding React Router to a React App is like upgrading an analog radio to a digital radio.
+
+Say you were listening to "Radio JavaScript" and wanted to listen to "React FM", you need to turn the frequency control to the left by 30 degrees. But, to get to "React FM" from "HTML Station" you need to turn the control a different amount and maybe a different direction.
+
+A digital radio makes changing station easier; no matter what we're listening to, the only thing we need to do to listen to "React FM" is to press one button.
+
+Analog Radio: You need to turn the radio frequency control knob and find the station you're looking for. To find a specific station, the direction and amount a user needs to turn the knob depends on which station the radio starts.
+
+Digital Radio: Instead of manually navigating the state of the radio, you press a button to jump between stations. There are pre-set stations we can instantly activate.
+
+Routes in a JavaScript web application are like digital radio stations, pre-set "states" that an App can jump between. Users can navigate to Routes directly instead of having to update the state through manual interactions with the page. We control these routes in a React application with a router by using the [/path] part of the application's URL.
+
+A JavaScript web application [b]without[/b] routing is a bit like an analog radio. You need to interact with the page (fill out forms, etc...) to update the state to where you want. Updating the state like this could be a multiple step process.
+
+Every state of the application is in the same URL. For example:
+
+{
+
+http://localhost:3000/
+
+}
+
+A JavaScript web application [b]with[/b] routing is more like a digital radio. The different routes are like different radio stations. One radio station is the radio in one state, and one route is your React app in one state. With a router, the [/path] in a URL can control part of the application's state.
+
+Different states of the application can be configured to different paths:
+
+{
+
+http://localhost:3000/state-1/
+http://localhost:3000/state-2/
+http://localhost:3000/station-1/
+http://localhost:3000/station-2/
+
+}
+
+[title]A quiz application example[/title]
+
+Imagine we have a Quiz application:
+
+  1. The quiz asks a question to the user presenting multiple choice answers. The user then selects an answer and submits their choice.
+  2. The quiz then displays a completely different screen saying "well done! Are you ready for another question?". The user then clicks the next button.
+  3. The quiz then displays a new question screen! And the process repeats...
+  4. Eventually, after all of the questions have been answered the quiz shows the results screen.
+
+This quiz application gets put on the web at the address [https://my-quiz-app.com] (not real). Here's some imaginary React code for this application:
+
+Pseudocode:
+
+{
+
+class QuizApp extends React.Component {
+  state = {
+    // quiz always starts at the first question!
+    currentQuestionIndex: 0,
+  };
+
+  goToNextQuestion = () => {
+    this.setState({
+      currentQuestionIndex: this.state.currentQuestionIndex + 1
+    })
+  };
+
+  render() {
+    const { currentQuestionIndex } = this.state;
+
+    // use a different component depending on the current question index
+    let comp;
+    if (currentQuestionIndex === 0) {
+      comp = <QuestionOne />;
+    } else if (currentQuestionIndex === 1) {
+      comp = <QuestionTwo />;
+    } else if (currentQuestionIndex === 2) {
+      comp = <QuestionThree />;
+    } else if (currentQuestionIndex === 3) {
+      comp = <QuestionFour />;
+    }
+    /* else if, etc... for more questions */
+    return (
+      <div>
+        {comp}
+        <button onClick={this.goToNextQuestion}>
+          Next question
+        </button>
+      </div>
+    )
+  }
+}
+
+}
+
+//  This pseudo code doesn't do everything we described.
+
+We can see in the pseudo code that the application can only go through one journey of questions in one direction. Users need to press the "next" button 3 times to get to [QuestionFour].
+
+There could be many questions on this application, maybe even 100 questions! We've also discussed at least 3 screens to display (not part of the pseudocode): the question, well done and results screen; there could be many more screens as well.
+
+Here, try it out for yourself. [Link: https://stackblitz.com/edit/sill-quiz]This is the quiz app[/Link], it has only 7 questions, what's the quickest way to read question 5, without changing the code? You have to answer the first 4 questions and click buttons! This is like an analog radio, to get to a different page you have to *"turn the frequency control knobs to see the station you want"*.
+
+//	Don't worry about understanding the React code, this silly quiz was thrown together for example purposes.
+
+Imagine you're building this as part of a team, one of the designers in your team wants to check if each screen looks correct. In order to see the results page, they need to answer all the questions!
+
+What if one of your users wants to show their online friend question number 47 out of 100? The online friend would have to answer the first 46 questions to see question 47!
+
+These are problems that React Router can help with.
+
+[title]The quiz with React-Router[/title]
+
+With a React Router, you'd be able to add an extra control for the application state; the URL's path!
+
+For example:
+
+  [Link]https://my-quiz-app.com/[/Link] : shows the welcome page
+  [Link]https://my-quiz-app.com/question/1[/Link] : shows question 1
+  [Link]https://my-quiz-app.com/question/4[/Link] : shows question 4
+  [Link]https://my-quiz-app.com/finished[/Link] : shows the final results page
+
+The path at the end of each URL holds extra state for the JavaScript application. We don't need the [currentQuestionIndex] anymore, we can use the "path" part of the address to control the current question.
+
+To update the pseudocode example:
+
+{
+
+class App extends React.Component {
+  // no need for custom state!
+
+  render() {
+    return (
+      <ReactRouter>
+        <HomePageRoute path={'/'} />
+        <QuestionOneRoute path={'/question/1'} />
+        <QuestionTwoRoute path={'/question/2'} />
+        <QuestionThreeRoute path={'/question/3'} />
+        {/* ... */}
+        <QuestionSixRoute path={'/question/6'} />
+      </ReactRouter>
+    )
+  }
+}
+
+}
+
+//  NOTE: To be super clear, this example won't work, it's pseudocode!
+
+This is much more simple than the previous pseudocode with a [currentQuestionIndex].
+
+Also, if we give a user the address for question 6 ([Link]https://my-quiz-app.com/question/6[/Link]), they open the application starting at question 6; the [QuestionSixRoute] component will be displayed!
+
+We have a component dedicated to each path. At its heart, this is how you'll see React Router works.
+
+React Router is a library that lets us render different components depending on the URL's path. It allows us to synchronize our application to the current path of our webpage.
+
+[b]Some of the notable features that React Router offers:[/b]
+
+	We can programmatically change the /path of our page in the browser address bar without the need for a complete page load. It's a state change, not a different webpage!
+  It integrates with the browser so that the "back" and "forward" buttons will work seamlessly with our routes.
+  It's driven by React Components, this is "idiomatic" to React developers; using components instead of configurations.
+  Sophisticated routing compositions, for example, dynamic and nested routes.
+
+[big title]Setting up React Router[/big title]
+
+Open up your [react-playground] project and we'll get React Router installed.
+
+In the terminal, we'll install the router. We'll want the DOM version for web pages, [react-router-dom].
+
+//  There are other react-router packages for different platforms such as mobile development.
+
+{
+
+npm install react-router-dom
+
+}
+
+Once [react-router-dom] is installed, you can wire up the React Router in your application. In order to inspect your playground project at each step of the configuration, start up your project: [npm start].
+
+Open your [./src/index.js] file, import the [BrowserRouter] component from ['react-router-dom'] and wrap it around your whole [App].
+
+{
+
+  import React from 'react';
+  import ReactDOM from 'react-dom';
++ import { BrowserRouter } from "react-router-dom";
+  import './index.css';
+  import App from './App';
+
+  ReactDOM.render(
+-   <App />,
++   <BrowserRouter>
++     <App />
++   </BrowserRouter>,
+    document.getElementById('root')
+  );
+
+}
+
+The [BrowserRouter] component adds the capabilities of React Router to your web application. Take a look inside the React developer tools at the [<BrowserRouter><App/></BrowserRouter>]; notice anything interesting? Inside the React DevTools, there is a new component shown [<Router />]. Even though we only added the [BrowserRouter], this results in two components being rendered: [<BrowserRouter><Router><App/></Router></BrowserRouter>], the [Router] came for free.
+
+Click on the [Router] component instance in the React developer tools to look at its state and props. The interesting data here is the [state.match] which has [path] and [url] keys for the current page.
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/router-react-devtools-ss.png
+
+}
+
+If you take a look inside the Chrome DevTools elements tab, these two Routing components don't add any elements to the DOM; we only have the [div#root] and the [div.App].
+
+[big title]Creating routes and navigating[/big title]
+
+Imagine the scene:
+
+You're a freelance web developer who likes to help small businesses grow by building their websites. One day you receive an email from a Ms. G. Paltrow. In this email, she says she has a great business opportunity for you!
+
+Without asking much else, you decide to take the job!
+
+Ms. G. Paltrow is over the moon with happiness that you've decided to help her and sends another email describing her business:
+
+She would like you to build a brochure website for "Paltrow's Power Toes". This business is focused on workout routines, advice, videos and merchandise dedicated exclusively to "improving toe strength". There are four pages needed:
+
+  1. [Link]https://paltrows-power-toes/[/Link] - the homepage for the business
+  2. [Link]https://paltrows-power-toes/about[/Link] - Ms. Paltrow to tell her story
+  3. [Link]https://paltrows-power-toes/workouts[/Link] - the page showing how to improve toe strength
+  4. [Link]https://paltrows-power-toes/[any-other-page][/Link] - when a user navigates to an address that doesn't exist, there should be a "404 - Not Found" page displayed
+
+[title]The app's layout[/title]
+
+Make a new folder inside your [react-playground] project for this play website: [./src/paltrows-power-toes/].
+
+We've created a sample project that you can reference to get started quickly. The sample project lives in GitHub at [Link]https://github.com/tomatau/paltrows-power-toes/tree/1-setup/src[/Link].
+
+//  Note this project is organized in different branches that increase in complexity. We'll guide you with links to what to look at and when.
+
+The contents of these files is a starting point and not the focus of this checkpoint. So let's get set up quickly!
+
+[Link: https://github.com/tomatau/paltrows-power-toes/archive/1-setup.zip]Download the repo as a ZIP[/Link] and copy the contents of the [src] folder into your [./src/paltrows-power-toes/] folder for the [react-playground].
+
+There should be these files in your local [react-playground]:
+
+{
+
+	src/
+├── index.css
+├── index.js
+└── paltrows-toes/
+    ├── AboutPage.css
+    ├── AboutPage.js
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── Content.css
+    ├── Content.js
+    ├── Footer.css
+    ├── Footer.js
+    ├── Header.js
+    ├── HomePage.js
+    ├── Nav.css
+    ├── Nav.js
+    ├── NotFoundPage.js
+    ├── WorkoutsPage.css
+    ├── WorkoutsPage.js
+    └── g-paltrow-self-portrate.png
+
+}
+
+Don't forget to update your [./src/index.js] to use the [App] component that's inside the [./src/paltrows-power-toes/] directory.
+
+{
+
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import { BrowserRouter } from "react-router-dom";
+  import './index.css';
+- import App from './App';
++ import App from './paltrows-power-toes/App';
+
+  ReactDOM.render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+    document.getElementById('root')
+  );
+
+}
+
+When you're done, your code should have no errors and look like the following screenshot.
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/ss-basic-layout.png
+
+}
+
+[title]Adding the first two routes[/title]
+
+We want to add our [/home] and [/about] paths to the app. Currently, if we click the links in the navigation bar, we always show the home page.
+
+We can use a [Route] component that will render another component when a certain path is in the URL address.
+
+We'll start with two props on the [Route] component, [path] and [component].
+
+    [path]: A string, the [Route] component will be looking at the current path for this.
+    [component]: A component, the [Route] component will render this component when the page's path matches the [path] prop.
+
+For example:
+
+{
+
+function Foo() {
+  return <p>I want to only shoe when the path is /foo</p>
+}
+
+//  plug the Foo component into the Route component's component prop
+<Route
+  path='/foo'
+  component={Foo}
+/>
+
+}
+
+Even though we have both [HomePage] and [AboutPage] components, we're currently only importing and rendering the [HomePage] component.
+
+So let's import the [AboutPage] component into the [./src/paltrows-power-toes/App.js]:
+
+{
+
+ import React, { Component } from 'react'
+ import Nav from './Nav'
+ import Header from './Header'
+ import Footer from './Footer'
+ import HomePage from './HomePage'
++import AboutPage from './AboutPage'
+ import './App.css'
+
+}
+
+Now with both components imported, we can use a [Route] component from react-router. Let's import it:
+
+{
+
+ import React, { Component } from 'react'
++import { Route } from 'react-router-dom'
+ import Nav from './Nav'
+ import Header from './Header'
+ import Footer from './Footer'
+ import HomePage from './HomePage'
+ import AboutPage from './AboutPage'
+ import './App.css'
+
+}
+
+And we can add 2 route components, one for each route, [/home] and [/about]. These will be our path props and the component props will be the components themselves.
+
+{
+
+     <Header />
+   </header>
+   <main>
+-    <HomePage />
++    <Route path='/' component={HomePage} />
++    <Route path='/about' component={AboutPage} />
+   </main>
+   <footer>
+     <Footer />
+
+}
+
+We've added 2 routes here, one for the path [/], which means no path. Another for the path [/about].
+
+  [Link]http://localhost:3000[/Link] - show [HomePage] component
+  [Link]http://localhost:3000/about[/Link] - show [AboutPage] component
+
+Oh no! [There's a bug!] Can you find it?
+
+If you click on the top navigation link for "Home", you'll see the application navigates to [Link]http://localhost:3000[/Link] and shows the HomePage component. This is what we want.
+
+Open up the React developer tools in Chrome. Now compare the two Route components:
+
+First, select the [<Route path="/">] and look at the state: there is a [match] object in the state.
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/ss-route-component.png
+
+}
+
+Next, select the [<Route path="/about">] and look at the state: the match state is now [null]. This is because the webpage address doesn't contain the string [/about].
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/ss-route-component-about.png
+
+}
+
+This page works as expected.
+
+But -- if you click on the "About" link in the top navigation, you'll see that the page navigates to [http://localhost:3000/about] and we show both [HomePage] and [AboutPage] components!
+
+This is happening because the [path] with a prop of [/] is going to match for both web addresses! In other words, the string of [/] is present in both web address [http://localhost:3000/] and [http://localhost:3000/about].
+
+Take a look at the Route components states in the React DevTools on this web address, they both have match objects.
+
+To solve this problem, we need to tell the [Route] component for the [HomePage] that we only want this component to show for exact components. We can do this with the prop called [exact].
+
+{
+  <main>
+-   <Route path='/' component={HomePage} />
++   <Route exact path='/' component={HomePage} />
+    <Route path='/about' component={AboutPage} />
+  </main>
+}
+
+With this prop added, we only show the [AboutPage] when the path is [/about]. Problem solved.
+
+If you refresh the webpage on the [/about] page, we render the [AboutPage] component immediately! Isn't that cool?
+
+//  You can compare your local code against the [Link: https://github.com/tomatau/paltrows-power-toes/tree/2-home-and-about/src]2-home-and-about[/Link] branch in the GitHub repository.
+
+[title]Navigating without a page load[/title]
+
+Right now our [Nav] component renders the following:
+
+{
+
+<Content className='Nav'>
+  <a href='/'>
+    Home
+  </a>
+  <a href='/about'>
+    About
+  </a>
+  <a href='/workouts'>
+    Workouts
+  </a>
+</Content>
+
+}
+
+When we click on the [a] elements for "Home" and "About" in the webpage's navigation bar, we are triggering a full page load.
+
+We can see this because the console gets restarted. Try this out:
+
+Go into your Chrome DevTools console tab and make sure "Preserve log" is [b]not[/b] checked. You can find the option by clicking the settings wheel at the top of the console tab.
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/ss-devtools-no-preserve-log.png
+
+}
+
+  1. Type[ "Should I stay or should I go?"] (and enter) in the console tab of the Chrome DevTools.
+  2. Click on the "About" link in the navigation bar of the app.
+  3. The string ["Should I stay or should I go?"] has been cleared.
+
+We can see the same behavior in the network tab of the Chrome DevTools as well. A new network request is being made when we navigate. This is because a complete page load is happening.
+
+We can improve this using the [Link] component from [react-router-dom] instead of [a] elements. The [Link] component will use a browser feature and some JavaScript to "pretend" to do a complete page load. Let's add them in so you can see for yourself.
+
+First, import the [Link] component into [Nav.js].
+
+{
+
+ import React, { Component } from 'react'
++import { Link } from 'react-router-dom'
+ import Content from './Content'
+ import './Nav.css'
+
+}
+
+The [Link] component doesn't work with [href] prop, instead, we use [to] prop. For now, everything else is the same as an [a] element.
+
+Let's swap the [a] elements for [Link] elements:
+
+{
+
+   render() {
+     return (
+       <Content className='Nav'>
+-        <a href='/'>
++        <Link to='/'>
+           Home
+-        </a>
++        </Link>
+-        <a href='/about'>
++        <Link to='/about'>
+           About
+-        </a>
++        </Link>
+-        <a href='/workouts'>
++        <Link to='/workouts'>
+           Workouts
+-        </a>
++        </Link>
+       </Content>
+     )
+   }
+
+}
+
+The mounted HTML is still the same as it was before:
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/ss-nav-elements-tab-with-links.png
+
+}
+
+Try the console steps that we did before:
+
+  1. Type ["Should I stay or should I go?"] (and enter) in the console tab of the Chrome DevTools.
+  2. Click on the "About" link in the navigation bar of the app.
+  3. The string ["Should I stay or should I go?"] now stays in the console!
+
+You can even click back and forth between the "About" and "Home" links a few times. The string ["Should I stay or should I go?"] will stay in the console!
+
+This is because we're not performing complete page loads anymore. React is only updating which components are rendered, even though the web address at the top of the browser is updating the path.
+
+You can even click the "back" and "forward" buttons in Chrome and still, the web page doesn't perform full page loads.
+
+//  You can compare your local code against the [Link: https://github.com/tomatau/paltrows-power-toes/tree/3-pushstate-navigation/src]3-pushstate-navigation[/Link] branch in the GitHub repository.
+
+[title]Add the workouts page[/title]
+
+Let's add a [Route] for the [WorkoutsPage] component now too. Make these changes to your [App] component.
+
+{
+
+ import Footer from './Footer'
+ import HomePage from './HomePage'
+ import AboutPage from './AboutPage'
++import WorkoutsPage from './WorkoutsPage'
+ import './App.css'
+
+}
+
+and
+
+{
+
+  <main>
+    <Route exact path='/' component={HomePage} />
+    <Route path='/about' component={AboutPage} />
++   <Route path='/workouts' component={WorkoutsPage} />
+  </main>
+  <footer>
+    <Footer />
+
+}
+
+The "Workouts" link in the navigation should now be working.
+
+//  You can compare your local code against the [Link: https://github.com/tomatau/paltrows-power-toes/tree/4-workouts-route/src"]4-workouts-route[/Link] branch in the GitHub repository.
+
+[title]Adding the not found page[/title]
+
+Ms. G. Paltrow said she would like a not found page. This is because she anticipates lots of customers to be sharing links to her website between each other and one of those links might get mistyped.
+
+For example, one customer might type out the address for the about page and get it wrong: [https://paltrows-power-toes/aboutoe].
+
+What happens right now if you type a path that doesn't exist?
+
+Try a few:
+
+  [Link]http://localhost:3000/foobar[/Link]
+  [Link]http://localhost:3000/aboutoe[/Link]
+  [Link]http://localhost:3000/no-existy[/Link]
+
+Our application renders none of the Route components.
+
+We need to configure a [Route] for these routes that don't exist, the problem here is, we don't know all the paths someone might try and get wrong! We need a kind of "catch-all" Route.
+
+We can add a new [Route] with no path, this would render for any address that's typed.
+
+In the [App] component, import the [NotFoundPage].
+
+{
+
+ import HomePage from './HomePage'
+ import AboutPage from './AboutPage'
+ import WorkoutsPage from './WorkoutsPage'
++import NotFoundPage from './NotFoundPage'
+ import './App.css'
+
+}
+
+Wire it up with a Route that has no path:
+
+{
+
+    <Route exact path='/' component={HomePage} />
+    <Route path='/about' component={AboutPage} />
+    <Route path='/workouts' component={WorkoutsPage} />
++   <Route component={NotFoundPage} />
+  </main>
+  <footer>
+    <Footer />
+
+}
+
+Clearly, this renders all the time now, which isn't a solution. The [Route] with [NotFoundPage] is [b]always matching[/b].
+
+There is another component we can use to help in this situation, the [Switch] component.
+
+The [Switch] component will render only one of its children [Route] components. It will only render the first [Route] component that has a [match]. So, if none of the other Routes match, it can render the children Route that always matches!
+
+Let's import the [Switch]:
+
+{
+
+ import React, { Component } from 'react'
+-import { Route } from 'react-router-dom'
++import { Route, Switch } from 'react-router-dom'
+
+}
+
+And wrap the [Switch] component around our routes:
+
+{
+
+         <main>
++          <Switch>
+             <Route exact path='/' component={HomePage} />
+             <Route path='/about' component={AboutPage} />
+             <Route path='/workouts' component={WorkoutsPage} />
+             <Route component={NotFoundPage} />
++          </Switch>
+         </main>
+
+}
+
+//  Note: Make sure the [<Route component={NotFoundPage} />] is at the bottom of the list or it will never let a component below it render.
+
+Now try the paths that don't exist:
+
+{
+
+  [Link]http://localhost:3000/foobar[/Link]
+  [Link]http://localhost:3000/aboutoe[/Link]
+  [Link]http://localhost:3000/no-existy[/Link]
+
+}
+
+We can see that only the [NotFoundPage] component is rendered as it's inside the only [Route] that matched.
+
+Checking inside the React developer tools, you can see that only one [Route] component is ever rendered inside the [Switch].
+
+//  You can compare your local code against the [Link: https://github.com/tomatau/paltrows-power-toes/tree/5-not-found-route/src]5-not-found-route[/Link] branch in the GitHub repository.
+
+Ms. Paltrow will be very pleased with this website now.
+
+[big title]Making routes dynamic[/big title]
+
+Let's continue with the scenario that you're a freelance developer helping small businesses. William Setstatespear approaches you with his poetry website project and you willingly accept the work!
+
+Here's what William wants from his website:
+
+  1. There will be a home page, [/], that displays a list of poems
+  2. Each poem in the list is a link to a page for that poem
+  3. When viewing a poem, the URL path should be [/poem/[poem-id]]
+
+[title]Planning the route configuration[/title]
+
+The home page can be set up as a single [Route] component for the path [/].
+
+The poem pages are not as straightforward. We don't want to make a new component for every poem, so it would be better if we can store the poem list in a JavaScript array and then only use one [PoemPage] component that can display any poem.
+
+We don't want to add a [Route] instance for each poem as well! It would be better to add one [Route] instance and somehow make it work for every poem.
+
+[title]The app's layout[/title]
+
+We've set up a repository for you as a starting point using create-react-app with the basic layout, styles, and pages as a starting point.
+
+  1. Open your terminal, cd to the location of your Thinkful projects
+  2. Fork [Link: https://github.com/Thinkful-Ed/william-setstatespear]this repository[/Link] which will create your own version of the [william-setstatespear] project.
+  3. Clone your forked copy of the repository which will create a folder for it
+    1. [git clone https://github.com/[YOUR-GITHUB-HANDLE]/william-setstatespear.git]
+    2. if you have an SSL agent setup, modify the clone URL appropriately
+  4. Move into this directory [cd william-setstatespear]
+  5. Install the dependencies [npm install]
+  6. Start the app [npm start]
+
+A browser tab should open to show you the design and the poem list page.
+
+Take a moment to look in the Chrome DevTools, React developer tools and the source code to get some sense of what's happening. Take a look inside the [App.js], [poems.js] and [PoemListPage.js].
+
+  [App.js]: has a basic layout and uses the [PoemListPage]
+  [poems.js]: exports an array of objects, each object is a poem with an [id], [title] and [content]
+  [PoemListPage.js]: displays a short paragraph and an unordered list. It iterates over the [POEMS] array exported from [poems.js], each of the poems is mapped to display a link.
+
+There are no React Router Routes setup yet and only [a] tags instead of [Links]. We'll be adding the Routes next. There's also a component called [PoemPage] which isn't being used yet.
+
+[title]The home page[/title]
+
+Let's quickly add the [Route] for the home page in the [App.js]:
+
+Import the Route component.
+
+{
+
+ import React, { Component } from 'react'
++import { Route } from 'react-router-dom'
+ import PoemListPage from './PoemListPage'
+ import './App.css'
+
+}
+
+Swap the hard-coded PoemListPage instance for a [Route] to an exact path of [/].
+
+{
+
+          <main>
+-          <PoemListPage />
++          <Route
++            exact path='/'
++            component={PoemListPage}
++          />
+         </main>
+
+}
+
+Take a look inside the [PoemListPage.js], inside the [<ul>] we're mapping over each of the poems to create [li] instances.
+
+{
+
+{POEMS.map(poem =>
+  <li key={poem.id} />
+)}
+
+}
+
+Inside each [li] instance, we create an anchor element with a dynamic [href].
+
+{
+
+<a href={`/poem/${poem.id}`}>
+  {poem.title}
+</a>
+
+}
+
+This is making an [a] for each of the poems inside the array inside [poems.js]. Take a look inside the Chrome DevTools at the contents of the [li] tags here. We're making a unique [href] for each of the poems.
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/ss-poemlistpage-anchors.png
+
+}
+
+//  You can compare your local code against the [Link: https://github.com/tomatau/william-setstatespear/tree/1-homepage/src]1-homepage branch[/Link] in the GitHub repository.
+
+[title]The poem page[/title]
+
+We want one [Route] component that can serve all of these paths. Let's add a [Route] in place first with an anonymous component that logs its route [match] prop.
+
+{
+
+             exact path='/'
+             component={PoemListPage}
+           />
++          <Route
++            component={(props) => {
++              console.log(props.match)
++              return <div />
++            }}
++          />
+         </main>
+         <footer>
+
+}
+
+The [href] for each poem [a] tag in the [PoemListPage] is made of the word [poem] and then [poem.id]. The new Route we make needs to match up with these [href]s. React router supports dynamic path parameters for this purpose, we can make part of our path dynamic.
+
+You can think about dynamic paths in a way similar to inserting a variable in part of the path. To define part of the path as dynamic, we prefix that part with a colon.
+
+For example, with the following Route:
+
+{
+
+<Route path='/fixed/:dynamic' />
+
+}
+
+The [/fixed] part of the URL is static and the [:dynamic] part is dynamic because it's prefixed with a colon, [:]. The dynamic part is called a [b]route parameter[/b].
+
+The following paths would all match for the above [Route] example and populate the dynamic variable appropriately.
+
+  [/fixed/foo], would match with route parameters [{ dynamic: 'foo' }]
+  [/fixed/bar], would match with route parameters [{ dynamic: 'bar' }]
+  [/fixed/123], would match with route parameters [{ dynamic: '123' }]
+  [/fixed], wouldn't match
+  [/something-else/foo], wouldn't match
+
+Let's use a dynamic path with a [b]route param[/b] for the poem id.
+
+{
+
+             exact path='/'
+             component={PoemListPage}
+           />
+           <Route
++            path='/poem/:poemId'
+             component={(props) => {
+               console.log(props.match)
+               return <div />
+             }}
+           />
+         </main>
+         <footer>
+
+}
+
+This has added a dynamic path, the [/poem] part is fixed and the [/:poemId] is a dynamic part with a route param called [poemId].
+
+Click on one of the anchors inside the [PoemListPage] in your browser viewport. For example, if we click on the first link "Computer Swallowed Grandma"; the browser will navigate to the address [http://localhost:3000/poem/swallowed-grandma]. This will match with the [Route] we just added and trigger a [console.log] for the [props.match]. The log output will look like so:
+
+{
+
+{
+  "path": "/poem/:poemId",
+  "url": "/poem/swallowed-grandma",
+  "isExact": true,
+  "params": {
+    "poemId": "swallowed-grandma"
+  }
+}
+
+}
+
+We have a [params.poemId] that's been populated inside the match with ["swallowed-grandma"]. Change the web address in your browser like so:
+
+{
+
+-http://localhost:3000/poem/swallowed-grandma
++http://localhost:3000/poem/foobar
+
+}
+
+Now the [console.log] output has used the [/foobar] to populate the [poemId] route parameter.
+
+With the dynamic path set up on the [Route], we can swap the anonymous component for the [PoemPage] which will read the [props.match.params.poemId] to display a poem out of the list.
+
+Navigate back to [http://localhost:3000/] first so we can see the full user flow.
+
+Import the [PoemPage].
+
+{
+
+ import PoemListPage from './PoemListPage'
++import PoemPage from './PoemPage'
+ import './App.css';
+
+}
+
+Swap the [component] prop of the dynamic [Route].
+
+{
+
+             exact path='/'
+             component={PoemListPage}
+           />
+           <Route
+             path='/poem/:poemId'
+-            component={(props) => {
+-              console.log(props.match)
+-              return <div />
+-            }}
++            component={PoemPage}
+           />
+         </main>
+         <footer>
+
+}
+
+Now if you click on an anchor in the poem list homepage, the app navigates to display a poem!
+
+Take a look inside the [PoemPage.js] file and see if you can understand how the poem is being selected from the [poems.js] to display it in the page. This code is quite complicated so you're not expected to understand everything, the important piece is [props.match.params.poemId]. Some hints for understanding this code is to look at the array methods for [Link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find].find[/Link], [Link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map].map[/Link] and [Link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator]"ternary expressions"[/Link].
+
+//  It's good practice for developing to try and comprehend complex code on your own. Remember to check the Chrome DevTools to see what the output of the code is and feel free to console.log() pieces of the code to understand what's happening.
+
+//  You can compare your local code against the [Link: https://github.com/tomatau/william-setstatespear/tree/2-poempage/src]2-poempage branch[/Link] in the GitHub repository.
+
+[title]Using Link components[/title]
+
+Let's change all of the [a] element instances to use the [Link] component from react-router-dom. This will skip the full page load when we navigate so that the experience is smoother.
+
+First, we can swap the [a] in [App.js].
+
+{
+
+ import React, { Component } from 'react'
+-import { Route } from 'react-router-dom'
++import { Route, Link } from 'react-router-dom'
+ import PoemListPage from './PoemListPage'
+ import PoemPage from './PoemPage'
+
+     return (
+       <div className='App'>
+         <nav>
+-          <a href='/'>Poem List</a>
++          <Link to='/'>Poem List</Link>
+         </nav>
+         <header>
+           <h1>William Setstatespear</h1>
+
+}
+
+Now swap the [a] instances in the [PoemListPage.js].
+
+{
+
+ import React from 'react'
++import { Link } from 'react-router-dom'
+ import POEMS from './poems'
+
+        <ul className='PoemList'>
+         {POEMS.map(poem =>
+           <li key={poem.id}>
+-            <a href={`/poem/${poem.id}`}>
++            <Link to={`/poem/${poem.id}`}>
+               {poem.title}
+-            </a>
++            </Link>
+           </li>
+         )}
+
+}
+
+With the [Link] component instances in place, try navigating around in the webpage to be sure everything still works. The experience should be smoother without full page loads on every navigation.
+
+// You can compare your local code against the [Link: https://github.com/tomatau/william-setstatespear/tree/3-link-instances/src]3-link-instances[/Link] branch in the GitHub repository.
+
+[big title]Programmatic navigation with history[/big title]
+
+There are times when you'll need to navigate to another route "programmatically". This means you'll need your JavaScript code to send the user to another route. Some examples of times this might be relevant:
+
+  After a user submits a login-form. Only if the submission is successful, redirect the user to the homepage.
+  After filling out a form that adds a new item to a list, redirect the user back to the list.
+  After clicking a link, depending on the type of user, you might want to navigate to a different route.
+
+Let's work on the bookmarks app from the previous checkpoint. We've refactored the bookmark app to a new starting point ready for installing react-router.
+
+[title]Quick set up[/title]
+
+  1. Open your command line and navigate to your Thinkful projects directory then clone this repository: [Link]https://github.com/Thinkful-Ed/bookmarks-app[/Link]
+  2. Once it's cloned, [cd] into [bookmarks-app] and [npm install] the current dependencies.
+  3. Open the source code in your editor and open the file [./src/config.js].
+  4. Change the [API_KEY] value for your own [API_KEY] generated previously.
+  5. With the [API_KEY] in place, [npm start] the app and try adding a few bookmarks!
+
+//  You might notice that any previous bookmarks you created won't show up as we wipe the slate clean every day.
+
+We've changed the design a little bit to add a basic navigation bar between the two pages using 2 buttons.
+
+[title]Install react-router-dom[/title]
+
+Go ahead and [npm install react-router-dom]; once completed, we can add the [BrowserRouter] to the root of the tree.
+
+Update [./src/index.js]:
+
+{
+
+ import React from 'react';
+ import ReactDOM from 'react-dom';
++import { BrowserRouter } from 'react-router-dom';
+ import './index.css';
+ import App from './App';
+
+-ReactDOM.render(<App />, document.getElementById('root'));
++ReactDOM.render(
++  <BrowserRouter>
++    <App />
++  </BrowserRouter>,
++  document.getElementById('root')
++);
+
+}
+
+We'll need to swap the page management using state for Routes in the [./src/App.js]:
+
+Import the [Route] component:
+
+{
+
+ import React, { Component } from 'react';
++import { Route } from 'react-router-dom';
+
+}
+
+Remove the state for setting the page:
+
+{
+
+ class App extends Component {
+   state = {
+-    page: 'list',
+     bookmarks,
+     error: null,
+   };
+
+}
+
+Remove the references to the page state in updates:
+
+{
+
+-  changePage = (page) => {
+-    this.setState({ page })
+-  }
+-
+   setBookmarks = bookmarks => {
+     this.setState({
+       bookmarks,
+       error: null,
+-      page: 'list',
+     })
+
+}
+
+Remove the page state from render:
+
+{
+
+render() {
+-    const { page, bookmarks } = this.state
++    const { bookmarks } = this.state
+     return (
+
+}
+
+Also in the render, we don't need to pass the changePage callback prop into the [<Nav>]:
+
+{
+
+     return (
+       <main className='App'>
+         <h1>Bookmarks!</h1>
+-        <Nav clickPage={this.changePage} />
++        <Nav />
+
+}
+
+And swap the conditional rendering logic for [Route] components! You'll notice we've used a different prop on the [Route] component here. Previously we used the [component] prop which takes a React component as its value, now we're using the [render] prop. Using the [render] prop here takes a function, we've done this because we need to control some props that get added to the [AddBookmark] and [BookmarkList] components. Using the [render] allows us to write the JSX for these two components and thus specify the props to pass:
+
+{
+
+         <div className='content' aria-live='polite'>
+-          {page === 'add' && (
+-            <AddBookmark
+-              onAddBookmark={this.addBookmark}
+-              onClickCancel={() => this.changePage('list')}
+-            />
+-          )}
++          <Route
++            path='/add-bookmark'
++            render={() =>
++              <AddBookmark
++                onAddBookmark={this.addBookmark}
++                onClickCancel={() => {/* what here? */}}
++              />}
++          />
+-          {page === 'list' && (
+-            <BookmarkList
+-              bookmarks={bookmarks}
+-            />
+-          )}
++          <Route
++            exact
++            path='/'
++            render={() =>
++              <BookmarkList
++                bookmarks={bookmarks}
++              />}
++          />
+         </div>
+
+}
+
+We've set the paths to exactly [/] for the list of bookmarks and [/add-bookmark] for the add bookmark form. Also, notice we aren't using [changePage] inside [onClickCancel]; we'll get to this shortly!
+
+The final change is to update the [Nav.js] component; we'll swap the buttons for [Link] components that point to our new routes!
+
+{
+
++import { Link } from 'react-router-dom';
+
+ export default function Nav(props) {
+   return (
+     <nav className='Nav'>
+-      <button onClick={() => props.clickPage('list')}>
++      <Link to={'/'}>
+         Bookmark List
+-      </button>
++      </Link>
+       {' '}
+-      <button onClick={() => props.clickPage('add')}>
++      <Link to={'/add-bookmark'}>
+         Add Bookmark
+-      </button>
++      </Link>
+     </nav>
+   );
+ }
+
+}
+
+If you run your tests at this point, they will blow up with errors about react router providers! To fix the errors, make the following change to your [App] and [Nav] components smoke tests:
+
+In [App.test.js]
+
+{
+
+ import React from 'react';
+ import ReactDOM from 'react-dom';
++import { BrowserRouter } from 'react-router-dom';
+ import App from './App';
+
+ it('renders without crashing', () => {
+   const div = document.createElement('div');
+   ReactDOM.render(
++    <BrowserRouter>
+-      <App />,
++      <App />
++    </BrowserRouter>,
+     div
+   );
+   ReactDOM.unmountComponentAtNode(div);
+ });
+
+}
+
+and [Nav.test.js].
+
+{
+
+ import ReactDOM from 'react-dom';
++import { BrowserRouter } from 'react-router-dom';
+ import Nav from './Nav';
+
+ it('renders without crashing', () => {
+   const div = document.createElement('div');
+   ReactDOM.render(
++    <BrowserRouter>
+-      <Nav />,
++      <Nav />
++    </BrowserRouter>,
+     div
+   );
+
+}
+
+We've made all of these changes on the [install-router] branch that you can see [Link: https://github.com/Thinkful-Ed/bookmarks-app/compare/master...Thinkful-Ed:install-router]here[/Link].
+
+[title]Broken redirects![/title]
+
+This is a nice improvement, we have specific routes for the list of bookmarks and the add bookmark page. However, two features have broken.
+
+  1. When we click the "cancel" button on the form, it no longer redirects back to the list.
+  2. When we successfully create a new bookmark, it no longer redirects back to the list.
+
+To solve these problems we'll use [history].
+
+[title]History[/title]
+
+History is another library that's a close friend of [react-router]: so close, it comes installed for free!
+
+We can use history to do various things such as subscribing to navigation changes, checking how many navigation events have taken place, and programmatically navigating!
+
+There are multiple ways to access the history.
+
+  1. Props on the [Router] component.
+
+Inside the React developer tools, take a look at the props for the [Router] component.
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/history-prop-on-router-devtools.png
+
+}
+
+You can see the [history] prop is available here and has multiple methods such as [push] and [goBack].
+
+  2. Route-props parameter to [render] prop.
+
+Update the [render] prop for the [/add-bookmark] route inside [App.js]
+
+{
+
+           <Route
+             path='/add-bookmark'
+-            render={() => <AddBookmark
+-              onAddBookmark={this.addBookmark}
+-              onClickCancel={() => {/* what here? */}}
+-            />}
++            render={({ history }) => {
++              console.log(history)
++              return <AddBookmark
++                onAddBookmark={this.addBookmark}
++                onClickCancel={() => {/* what here? */}}
++              />
++            }}
+           />
+
+}
+
+The function we give to the [render] prop is given a parameter called "Route-props". The Route props has keys for [match], [location] and [history]. Because of these keys, we can destruct the [history] key out of the route props when describing the function parameters like so: [render={({ history }) => {].
+
+This gives us the [history] object directly to one of the routes! With the above change in place, navigate to the [/add-bookmark] route using the nav links and the [history] object will be logged to the console.
+
+  3. Components passed as [component] prop to [Route].
+
+If we were to instead use the [component={AddBookmark}] on the [<Route />] instance, the [match], [location] and [history] would get passed directly to the [AddBookmark]. We won't do this, just know it's an option.
+
+  4. There are other ways to access history.
+
+We won't show them all, if you ever need to discover the other ways, you can find them on <a href="https://reacttraining.com/react-router/">the official React Router documentation</a>.
+
+[title]Fixing the cancel button[/title]
+
+With the history available inside the [render] prop for [/add-bookmark], we can now use it in the [onClickCancel] callback prop!
+
+To [b]programmatically navigate[/b], the [history] object provides a method called [push]. We call push and can supply the path we want to programmatically navigate to!
+
+Let's update the callback to navigate back to the list, [/], when the cancel button is clicked!
+
+{
+
+           <Route
+             path='/add-bookmark'
+             render={({ history }) => {
+-              console.log(history)
+               return <AddBookmark
+                 onAddBookmark={this.addBookmark}
+-                onClickCancel={() => {/* what here? */}}
++                onClickCancel={() => history.push('/')}
+               />
+             }}
+           />
+
+}
+
+That should've fixed it! Try clicking the cancel button on the add bookmark form. It'll send you back to the list.
+
+The [push] method was used to "push" a new path onto the browser's history, i.e. to navigate to a new page. We can also use the [history.goBack()] method to go back to the previous entry in the browser's history; as you would when clicking the back button.
+
+[title]Navigating after successfully adding a bookmark[/title]
+
+Now that we've had a little practice with the history object, let's do the important part. We want to wait for the result of the POST request for a new bookmark. If this is successful, and only if it's successful, we want to navigate back to the bookmark list.
+
+Look inside [AddBookmark.js], the [handleSubmit] method performs a fetch request and at the end of the promise chain, the submission was successful and we call [this.props.onAddBookmark]:
+
+{
+
+  handleSubmit = e => {
+    /* some code skipped */
+    fetch(config.API_ENDPOINT, {
+      method: 'POST',
+    /* some code skipped */
+      })
+      .then(data => {
+        title.value = ''
+        url.value = ''
+        desc.value = ''
+        rating.value = ''
+        this.props.onAddBookmark(data)
+      })
+  }
+
+}
+
+How can we get the [history] object in here?! It isn't available as a prop to the [AddBookmark] component. We have two options:
+
+  1. Pass [history] as a prop to [AddBookmark] inside the [render] prop of [App].
+  2. Use the [withRouter] higher order component (HOC).
+
+The first option looks straightforward! But imagine the [AddBookmark] was deeper down the tree! Would we want to pass the [history] as a prop at each child component until it reaches the [AddBookmark]?
+
+The second option allows us to access the [history] from any depth of the component tree.
+
+We won't explain everything about "higher order components" (HOC) right now, we'll show you the syntax and give you this example of using one. Higher order components are functions we can pass our components into, they often allow us to inject new props into a component like magic.
+
+To use the [withRouter] higher order component, first, import it into [AddBookmarks.js]
+
+{
+
+ import React, { Component } from  'react';
++import { withRouter } from 'react-router-dom';
+ import config from '../config'
+ import './AddBookmark.css';
+
+}
+
+Now wrap the component inside this HOC. By this we mean, pass the component into the HOC as an argument and export the result.
+
+{
+
+-export default AddBookmark;
++export default withRouter(AddBookmark);
+
+}
+
+Take a look in the React DevTools now, a lot of new components and funky business has been added! But, most importantly, the [history] is now a prop for the [AddBookmark] component!
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/with-router-add-bookmark-devtools.png
+
+}
+
+This means we can get the [history] inside our promise chain and programmatically navigate on success!
+
+{
+
+         url.value = ''
+         desc.value = ''
+         rating.value = ''
++        this.props.history.push('/')
+         this.props.onAddBookmark(data)
+       })
+       .catch(error => {
+
+}
+
+That should do it! If you add a new bookmark, the page will redirect to the bookmark list!
+
+We've made all of these changes on the [programmatic-navigation] branch that you can see [Link: https://github.com/Thinkful-Ed/bookmarks-app/compare/install-router...Thinkful-Ed:programmatic-navigation]here[/Link].
+
+[big title]Summary[/big title]
+
+To use React-Router in a web application you should use the [react-router-dom] module. This will give you a library of components and tools you can use to make your single-page-application (SPA) support multiple "paths". Each path in an SPA is a snapshot of the application in a certain state.
+
+You can wrap your entire web client application in a [BrowserRouter] component to enable React Router features and then setup [Routes] that display components at certain paths. Using [Link] components in place of [<>] or [<button>] components, you can trigger navigation to different paths which display different routes.
+
+It's possible to trigger navigation programmatically by using the [history] object that's provided by React Router. The history object contain a [push] method for triggering navigation or a [goBack] method for navigating to the previous page. Programmatic navigation is useful for navigating after events or in certain conditions such as a successful API response is received or the user is not logged in so they don't have permission to view that route.
+
+[big title]Assignment[/big title]
+
+You're going to build an application called [b]Noteful[/b]. This application will be built up over several checkpoints as we first create the design and basic components with routing, and then move onto integrating the API calls. We'll also be building the back-end for this application in the Node curriculum!
+
+To start, create a new [create-react-app] project called [noteful] and remove the boilerplate code to have a clean starting point.
+
+This assignment is to build the basic components for 3 routes based off of the wireframes we'll supply below. You don't need to implement any API calls or functionality to manage the notes just yet as we'll get to that in later checkpoints.
+
+[b]Requirements[/b]
+
+There are 3 routes to build: the main route, the dynamic folder route and a dynamic note route. We'll supply you with 3 wireframes for each of these pages and you'll then need to create the semantic (accessible) HTML for these as well as basic styling.
+
+There are 3 routes to build: the main route, the dynamic folder route and a dynamic note route. We'll supply you with 3 wireframes for each of these pages and you'll then need to create the semantic (accessible) HTML for these as well as basic styling.
+
+  Each route should have a header, main section, and a sidebar section
+
+  Every route will have the same header section, the app's title should be a link to the main route.
+
+  The state will be supplied below in a JSON object and contains an array of [folders] and an array of [notes].
+    Set the state inside the main [App] component. (We'll use an API call to populate this state in a future checkpoint.)
+
+  The [b]main[/b] route:
+    Should be displayed when the path is [/]
+    The main section will display all of the available notes
+      Each note should show it's name and modified date
+    The sidebar will display a list of folders with none selected
+
+  The dynamic [b]folder[/b] route:
+    Should be displayed when the path is [/folder/<with-a-folder-id-here>]
+    The [folder-id] will reference an id of one of the folders in state
+    The main section should display only the notes that are "in" the selected folder
+    The sidebar should display the folder list with the selected folder highlighted
+
+  The dynamic [b]note[/b] route:
+    Should be displayed when the path is [/note/<with-a-note-id-here>]
+    The [note-id] will reference an id of one of the notes in state
+    The main section should display the currently selected notes name, modified date and content
+    The sidebar should display the folder of the currently selected note as well as a "back" button.
+
+This assignment is the biggest one for your React journey so far and should take about four hours to complete. If you're having trouble, attend a Q&A session or reach out on Slack for help.
+
+[b]Dummy data[/b]
+
+Use this [Link: https://gist.github.com/tomatau/a1686a9af624dd39f753de8ce90fd345]dummy-store.js[/Link] as a file in your project to populate the initial state.
+
+[b]Wireframes[/b]
+
+The main route:
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/main-route-wireframe.png
+
+}
+
+The folder route:
+
+{
+
+img: https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/folder-route-wireframe.png
+
+}
+
+The note route:
+
+{
+
+https://curricula.thinkful.com/curricula/470516c8-d2be-4d1d-be0c-03c9d8da4483/react-v1/assets2/react_routing/note-route-wireframe.png
+
+}
+
+[b]Hints[/b]
+
+Hints for the App component:
+
+  Use sets of Route components: one set for the main content and another set for the sidebar. Each set of routes can be configured using the same paths, but different components. For example:
+
+  {
+
+  function Example() {
+    return <>
+      <Sidebar>
+        <Route path='/' component={MainSidebar} />
+        <Route path='/foo' component={FooSidebar} />
+      </Sidebar>
+      <Main>
+        <Route path='/' component={MainMain} />
+        <Route path='/foo' component={FooMain} />
+      </Main>
+    </>
+  }
+
+	}
+
+  In order to pass props into components for specific routes, you'll need to use the [render] prop on [Route] components in a similar way to when we added programmatic navigation to the bookmarks app. For example:
+
+  {
+
+  <Route
+    path='/foo'
+    render={(routerProps) =>
+      <FooSidebar
+        aFoo={this.state.foos.find(foo => foo.id === routeProps.match.params.foodId)}
+      />
+    }
+  />
+
+  }
+		
+    The main route and the folder route could use the same component with a different list of notes passed in as props.
+
+The folder route:
+
+    Instead of using [Link] components in the sidebar for each folder, you can use the React-Router [NavLink] component that will automatically add a [className] of ["active"] when appropriate.
+    You'll need to filter for the notes that contain a matching [folderId] to the folder that's selected when deciding which notes to display.
+
+[title]Solution[/title]
+
+We ask that you don't look at the solution until you've spent at least 3 hours trying to make it through on your own. [b]That does not mean three hours of working alone.[/b] If you get stuck working on this project, by all means, talk to others. And if it takes you less than 4 hours, that's great too! The point is to make a good faith effort before looking at the [Link: https://github.com/Thinkful-Ed/noteful-client/tree/implement-design-and-routing/src]solution[/Link] that you can see a live preview of [Link: https://tomatau.github.io/noteful-client/]here[/Link].
