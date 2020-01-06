@@ -74,13 +74,15 @@ Lines 390-391: These actually work since I had used "npm start", which was reall
 
 Line 393: I don't know why this is highlighted, but it brings the count to 10. I'm going to stop it here since I think there are more but I think I made my point... which is 10+ different types of highlights all using the same color makes determining the context in which they are used much harder. A really simple and effective solution would be to use different highlight colors to easily distinguish between different concepts or topics. Here's that list one more time: url, javascript variable, react component, react projects, react packages, jsx, state data, filepath, props and "There's a bug!".
 
+Line 395: The words "this is what we want" immediately after revealing a bug suggests we are now no longer worried about the bug because I'm assuming "what we want" is resolution of the bug. This was rather confusing to me on my first read-through.
+
 Lines 417-419: I'm wondering if there is a particular reason urls aren't links anymore.
 
 Lines 425-431: No reminder of which component this edit is in? What if I got distracted by a butterfly? What if I had to leave just before this and then pick it up later? Again, I appeal to you for header/titles.
 
 Line 437: Suddenly, the weird gibbersh in line 252 makes sense! I like the five checkpoints with links to the app in various states of development (also at lines 250, 540, 572 and 667), but there is a slight problem with that approach in this particular case. There isn't a lot of content between the checkpoints, so it feels like following along with the code is kind of wasted effort. I feel like maybe a better approach would be to have the starting code at the start and the finished code at the end - so two checkpoints. The checkpoints are too close together.
 
-Line 743-759: The author is known to occasionally toss pseudocode in with other examples without warning on occasion, so I'm wondering if its pseudocode.
+Line 743-759: The author is known to occasionally toss pseudocode in with other examples without warning, so I'm wondering if its pseudocode.
 
 Line 769: Is this from the same repository at 694? Why have two links?
 
@@ -110,9 +112,9 @@ Lines 1355-1473: I appreciate the scale of the assignment, but I think it is per
 
 End
 
-You may have noticed I made a big deal out of pictures when I saw them. Pictures are awesome. Pictures are amazing. Pictures are worth a 1000 words. Unfortunately, the author would prefer to use a 1000 words to try to tell us something when he could just as well simply ...show. Don't get me wrong, I LOVE text. If given a choice, I'd rather read an article than watch a video. However, things like math and programming can and should be taught through showing. You can either write one equals one or 1 = 1. The first is telling, the second is showing. I feel like the reading as a whole does a lot more telling than showing. Telling is fine, its great, but not when there isn't enough showing, especially as the code gets more complicated. We need more showing with the telling. I don't really want to compare this curriculum with another resource, but I will recommend taking a good look at w3school's website. They do a considerable about amount of showing, and almost all of it is with a lightweight code editor right in the browser. I would LOVE to see something like this editor implemented and utilized on the thinkful site. That would be amazing.
+You may have noticed I made a big deal out of pictures when I saw them. Pictures are awesome. Pictures are amazing. Pictures are worth a 1000 words. Unfortunately, the author would prefer to use a 1000 words to try to tell us something when he could just as well simply ...show. Don't get me wrong, I LOVE text. If given a choice, I'd rather read an article than watch a video. However, things like math and programming can and should be taught through showing. You can either write one equals one or 1 = 1. The first is telling, the second is showing. I feel like the reading as a whole does a lot more telling than showing. Telling is fine, its great, but not when there isn't enough showing, especially as the code gets more complicated. We need more showing with the telling. I don't really want to compare this curriculum with another resource, but I will recommend taking a good look at w3school's website. They do a considerable amount of showing, and almost all of it is with a lightweight code editor right in the browser. I would LOVE to see something like this editor implemented and utilized on the thinkful site. That would be amazing.
 
-My last issue with the reading is how difficult it is to find a concept in the reading. When working on the assignment I would try to find things it was talking about, but the reading is so huge and the sections are so indistinct from each other that it would take a full minute every single time I needed to try to find something in the reading. Especially for readings this long, we need a much easier way to find what we're looking for when we need to.
+My last issue with the reading is how difficult it is to find a concept in the reading. When working on the assignment I would try to find things in the reading I needed to proceed, but the reading is so huge and the sections are so indistinct from each other that it would take a full minute every single time I needed to try to find something in the reading. Yes, I'm slow. Don't judge me! Especially for readings this long, we need a much easier way to find what we're looking for when we need to.
 
 One last suggestion I forgot to include: I think a great addition to highlights would be giving them tooltips on hover that include the definition of the term and/or other information.
 
