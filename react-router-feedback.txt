@@ -114,4 +114,6 @@ You may have noticed I made a big deal out of pictures when I saw them. Pictures
 
 My last issue with the reading is how difficult it is to find a concept in the reading. When working on the assignment I would try to find things it was talking about, but the reading is so huge and the sections are so indistinct from each other that it would take a full minute every single time I needed to try to find something in the reading. Especially for readings this long, we need a much easier way to find what we're looking for when we need to.
 
+One last suggestion I forgot to include: I think a great addition to highlights would be giving them tooltips on hover that include the definition of the term and/or other information.
+
 I think that's mostly it. I don't necessarily think the curriculum is bad, I think it's addressed to programmers that know a lot of this stuff intuitively already. We aren't that. We are part-time web dev students, and we are going to need to have a lot of blanks filled in and a lot of stuff hammered in our heads. We need practice and guidance. We are paying you for this, and I feel like you can do better. I'm not trying to be mean or nasty, just honest.
